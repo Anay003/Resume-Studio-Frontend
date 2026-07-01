@@ -11,7 +11,7 @@ export class ResumeService {
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'https://localhost:7042/api';
+  private readonly apiUrl = 'https://resume-studio-backend-nfqb.onrender.com/api';
   public readonly resumeForm: FormGroup;
 
   // Loading indicators for API operations
