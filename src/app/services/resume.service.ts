@@ -134,50 +134,8 @@ export class ResumeService {
     });
   }
 
-  // Generate a mock learning roadmap (will be replaced by AI in Phase 5)
-  getMockRoadmap(targetRole: string): LearningRoadmap {
-    return {
-      targetRole,
-      description: `A structured learning pathway to become a proficient ${targetRole}. This roadmap covers foundational knowledge, advanced concepts, and real-world application patterns.`,
-      steps: [
-        {
-          stepTitle: 'Foundations & Core Concepts',
-          description: `Build a strong foundation in the core technologies and principles required for the ${targetRole} position. Focus on understanding fundamental patterns, data structures, and development workflows.`,
-          durationEstimate: '4-6 weeks',
-          resources: [
-            'Official documentation and getting-started guides',
-            'FreeCodeCamp or Codecademy interactive courses',
-            'YouTube tutorial series for beginners',
-            'Practice projects: Build a personal portfolio site'
-          ]
-        },
-        {
-          stepTitle: 'Advanced Patterns & Tooling',
-          description: `Deepen your expertise with advanced design patterns, state management, testing strategies, and CI/CD pipelines commonly used in ${targetRole} workflows.`,
-          durationEstimate: '6-8 weeks',
-          resources: [
-            'Udemy or Pluralsight advanced courses',
-            'Open-source project contributions on GitHub',
-            'Design pattern references (Gang of Four, Clean Architecture)',
-            'Practice projects: Build a full-stack CRUD application'
-          ]
-        },
-        {
-          stepTitle: 'Architecture, Leadership & Interview Prep',
-          description: `Learn system design, architectural decision-making, and team leadership skills. Prepare for technical interviews targeting ${targetRole} positions.`,
-          durationEstimate: '4-6 weeks',
-          resources: [
-            'System Design Interview by Alex Xu',
-            'LeetCode / HackerRank problem sets',
-            'Mock interview platforms (Pramp, Interviewing.io)',
-            'Practice projects: Design and document a scalable system'
-          ]
-        }
-      ]
-    };
-  }
 
-  // Call the mock Summary Optimizer endpoint
+  // Call the AI Summary Optimizer endpoint
   enhanceSummaryFromServer(currentSummary: string): Observable<{ enhancedSummary: string }> {
     this.isLoading.set(true);
     this.loadingMessage.set('AI is optimizing your professional summary...');
@@ -189,7 +147,7 @@ export class ResumeService {
     );
   }
 
-  // Call the mock Bullet Optimizer endpoint
+  // Call the AI Bullet Optimizer endpoint
   improveBulletFromServer(currentBullet: string): Observable<{ enhancedBullet: string }> {
     this.isLoading.set(true);
     this.loadingMessage.set('AI is improving your bullet point achievement metrics...');

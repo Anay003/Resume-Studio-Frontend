@@ -175,3 +175,43 @@
     }
   }
 }
+
+.roadmap-footer {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.updates-notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--neutral-50);
+  border: 1px solid var(--neutral-200);
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--neutral-600);
+  box-shadow: var(--box-shadow-sm);
+  
+  .updates-icon {
+    font-size: 1.25rem;
+    width: 20px;
+    height: 20px;
+    color: var(--primary-color);
+    animation: spin-updates 12s linear infinite;
+  }
+}
+
+@keyframes spin-updates {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
