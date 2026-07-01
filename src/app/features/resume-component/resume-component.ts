@@ -60,6 +60,10 @@ export class ResumeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.resumeService.skipServerLoad) {
+      this.resumeService.skipServerLoad = false;
+      return;
+    }
     // Attempt to automatically load cached data from the server on startup
     this.resumeService.isLoading.set(true);
     this.resumeService.loadingMessage.set('Loading saved resume...');

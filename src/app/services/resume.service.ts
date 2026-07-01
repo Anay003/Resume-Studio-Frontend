@@ -13,6 +13,7 @@ export class ResumeService {
 
   private readonly apiUrl = 'https://resume-studio-backend-nfqb.onrender.com/api';
   public readonly resumeForm: FormGroup;
+  public skipServerLoad = false;
 
   // Loading indicators for API operations
   public readonly isLoading = signal<boolean>(false);

@@ -18,6 +18,7 @@ export class HomeComponent {
   public readonly resumeService = inject(ResumeService);
 
   buildFromScratch(): void {
+    this.resumeService.skipServerLoad = true;
     this.resumeService.resumeForm.reset();
     // Initialize with single empty array elements for initial form groups
     while (this.resumeService.experience.length) this.resumeService.experience.removeAt(0);
@@ -34,6 +35,7 @@ export class HomeComponent {
   }
 
   loadSample(): void {
+    this.resumeService.skipServerLoad = true;
     this.resumeService.loadSampleData();
     this.router.navigate(['/resume']);
   }
@@ -56,10 +58,12 @@ export class HomeComponent {
         next: (res) => {
           if (res && res.parsedData) {
             // AI parser returned structured data — populate all form fields
+            this.resumeService.skipServerLoad = true;
             this.resumeService.setResumeData(res.parsedData as any);
             this.router.navigate(['/resume']);
           } else if (res && res.extractedText) {
             // Fallback: reset form and dump raw text into summary
+            this.resumeService.skipServerLoad = true;
             this.resumeService.resumeForm.reset();
             while (this.resumeService.experience.length) this.resumeService.experience.removeAt(0);
             while (this.resumeService.projects.length) this.resumeService.projects.removeAt(0);
