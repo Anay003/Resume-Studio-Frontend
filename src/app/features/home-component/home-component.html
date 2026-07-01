@@ -1,0 +1,105 @@
+<div class="home-container">
+  <section class="hero">
+    <h1>AI Resume Studio</h1>
+    <p class="subtitle">A minimal, clean workspace to build, refine, and optimize your professional resume.</p>
+  </section>
+
+  <div class="actions-grid">
+    <mat-card class="action-card">
+      <mat-card-header>
+        <div class="card-icon">
+          <mat-icon>add</mat-icon>
+        </div>
+        <mat-card-title>Create New</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Start with a blank workspace and enter your professional details step by step.</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button color="primary" class="w-full" (click)="buildFromScratch()">
+          Build from Scratch
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="action-card">
+      <mat-card-header>
+        <div class="card-icon">
+          <mat-icon>description</mat-icon>
+        </div>
+        <mat-card-title>Sample Resume</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Pre-fill the builder with a sample profile to see the print layout immediately.</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button class="w-full" (click)="loadSample()">
+          Load Sample Profile
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="action-card">
+      <mat-card-header>
+        <div class="card-icon">
+          <mat-icon>upload_file</mat-icon>
+        </div>
+        <div class="card-title-row">
+          <mat-card-title>Upload Resume</mat-card-title>
+          <span class="badge badge-coming-soon">PDF Extract</span>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Upload a PDF resume to automatically parse and extract text using backend parser services.</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button class="w-full" (click)="triggerPdfUpload(homePdfInput)">
+          Upload PDF File
+        </button>
+        <input 
+          #homePdfInput 
+          type="file" 
+          accept=".pdf" 
+          style="display: none;" 
+          (change)="onPdfSelected($event)"
+        />
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <section class="roadmap-preview">
+    <h2>Development Roadmap</h2>
+    <div class="roadmap-steps">
+      <div class="step-item active-step">
+        <div class="step-num">1</div>
+        <h4>Phase 1: Frontend MVP</h4>
+        <p>Interactive form building with real-time A4 PDF layouts.</p>
+      </div>
+      <div class="step-item active-step">
+        <div class="step-num">2</div>
+        <h4>Phase 2: ASP.NET Web API</h4>
+        <p>Backend infrastructure, in-memory cache, and PDF exports using QuestPDF.</p>
+      </div>
+      <div class="step-item active-step">
+        <div class="step-num">3</div>
+        <h4>Phase 3: Integration</h4>
+        <p>Connecting Angular frontend and Web API layer for end-to-end data saving (Current Phase).</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <h4>Phase 4: AI & Assistance</h4>
+        <p>Integrating NVIDIA NeMo AI services for bullet point tuning, ATS reviews, and roadmap generation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Material Loading Spinner Overlay -->
+  @if (resumeService.isLoading()) {
+    <div class="loading-overlay">
+      <div class="loading-container">
+        <mat-spinner diameter="60" color="primary"></mat-spinner>
+        <span class="loading-text">{{ resumeService.loadingMessage() }}</span>
+      </div>
+    </div>
+  }
+</div>

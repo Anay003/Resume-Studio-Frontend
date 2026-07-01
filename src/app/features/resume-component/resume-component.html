@@ -1,0 +1,1029 @@
+<div class="workspace-container">
+  <!-- Left Side: Form Editor -->
+  <div class="editor-pane">
+    <div class="pane-header">
+      <h2>Resume Workspace</h2>
+      <div class="action-buttons">
+        <button mat-stroked-button (click)="resumeService.loadSampleData()">
+          <mat-icon>restore</mat-icon> Load Sample
+        </button>
+        <button mat-stroked-button color="warn" (click)="clearResume()">
+          <mat-icon>delete_sweep</mat-icon> Clear Template
+        </button>
+        <button mat-stroked-button color="primary" (click)="saveToServer()">
+          <mat-icon>cloud_upload</mat-icon> Save to Server
+        </button>
+        <button mat-flat-button color="primary" (click)="exportPdf()">
+          <mat-icon>picture_as_pdf</mat-icon> Export PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Actions & Helper Bar -->
+    <div class="ai-helpers-bar">
+      <span class="helper-label">API Actions:</span>
+      <button mat-stroked-button (click)="triggerPdfImport(pdfFileInput)">
+        <mat-icon>snippet_folder</mat-icon> Parse PDF Resume
+      </button>
+      <input 
+        #pdfFileInput 
+        type="file" 
+        accept=".pdf" 
+        style="display: none;" 
+        (change)="onPdfFileSelected($event)"
+      />
+      <button mat-stroked-button (click)="setPreviewTab('match')">
+        <mat-icon>compare_arrows</mat-icon> Match Job Description
+      </button>
+      <button mat-stroked-button (click)="setPreviewTab('ats')">
+        <mat-icon>analytics</mat-icon> ATS Score Review
+      </button>
+      <button mat-stroked-button (click)="setPreviewTab('roadmap')">
+        <mat-icon>map</mat-icon> Learning Roadmap
+      </button>
+    </div>
+
+    <form [formGroup]="resumeService.resumeForm" class="editor-form">
+      <mat-accordion multi="true">
+        <!-- Section: Personal Info -->
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>1. Personal Information</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="section-content-inner" formGroupName="personalInfo">
+            <div class="form-grid">
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Full Name *</mat-label>
+                <input matInput formControlName="fullName" placeholder="e.g. John Doe" />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Current Role</mat-label>
+                <input matInput formControlName="currentRole" placeholder="e.g. Frontend Engineer" />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Email *</mat-label>
+                <input matInput type="email" formControlName="email" placeholder="e.g. email@example.com" />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Phone</mat-label>
+                <input matInput type="tel" formControlName="phone" placeholder="e.g. +1 (555) 019-2834" />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Location</mat-label>
+                <input matInput formControlName="location" placeholder="e.g. San Francisco, CA" />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>LinkedIn</mat-label>
+                <input matInput formControlName="linkedIn" placeholder="e.g. linkedin.com/in/username" />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>GitHub</mat-label>
+                <input matInput formControlName="gitHub" placeholder="e.g. github.com/username" />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Portfolio/Website</mat-label>
+                <input matInput formControlName="portfolio" placeholder="e.g. portfolio.dev" />
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Section: Professional Summary -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>2. Professional Summary</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="section-content-inner">
+            <div class="label-row mb-2">
+              <span class="label-desc">Write a short career introduction</span>
+              <button mat-stroked-button type="button" class="ai-btn-mat" (click)="optimizeSummary()">
+                <mat-icon>auto_awesome</mat-icon> Optimize Summary (AI)
+              </button>
+            </div>
+            
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Summary</mat-label>
+              <textarea 
+                matInput 
+                formControlName="professionalSummary" 
+                placeholder="Briefly describe your career background, key skills, and accomplishments..."
+                rows="4"
+              ></textarea>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Section: Skills -->
+        <mat-expansion-panel formGroupName="skills">
+          <mat-expansion-panel-header>
+            <mat-panel-title>3. Key Skills</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="section-content-inner">
+            <p class="section-desc">Enter lists of skills separated by commas (e.g. Angular, React, Vue).</p>
+            <div class="form-grid">
+              <mat-form-field appearance="outline" class="form-group col-12">
+                <mat-label>Programming Languages</mat-label>
+                <input matInput formControlName="programmingLanguages" placeholder="TypeScript, JavaScript, Python..." />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-12">
+                <mat-label>Frameworks & Libraries</mat-label>
+                <input matInput formControlName="frameworks" placeholder="Angular, React, Express, NestJS..." />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Databases</mat-label>
+                <input matInput formControlName="databases" placeholder="PostgreSQL, MongoDB, Redis..." />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Cloud Services</mat-label>
+                <input matInput formControlName="cloud" placeholder="AWS, Azure, Firebase..." />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>DevOps</mat-label>
+                <input matInput formControlName="devOps" placeholder="Docker, Kubernetes, CI/CD..." />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-6">
+                <mat-label>Tools & Platforms</mat-label>
+                <input matInput formControlName="tools" placeholder="Git, VS Code, Figma..." />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-12">
+                <mat-label>Soft Skills</mat-label>
+                <input matInput formControlName="softSkills" placeholder="Mentoring, Agile, Teamwork..." />
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Section: Experience -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>4. Work Experience</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="section-content-inner" formArrayName="experience">
+            @for (exp of resumeService.experience.controls; track exp; let i = $index) {
+              <div class="array-item-card" [formGroupName]="i">
+                <div class="card-header">
+                  <h4>Experience #{{ i + 1 }}</h4>
+                  <button mat-stroked-button color="warn" type="button" (click)="resumeService.removeExperience(i)">
+                    <mat-icon>delete</mat-icon> Remove
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Company *</mat-label>
+                    <input matInput formControlName="company" placeholder="e.g. Acme Corp" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Role *</mat-label>
+                    <input matInput formControlName="role" placeholder="e.g. Software Engineer" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Location</mat-label>
+                    <input matInput formControlName="location" placeholder="e.g. Boston, MA" />
+                  </mat-form-field>
+                  
+                  <div class="form-group col-6 checkbox-align">
+                    <mat-checkbox formControlName="currentlyWorking">
+                      Currently working here
+                    </mat-checkbox>
+                  </div>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput formControlName="startDate" placeholder="YYYY-MM" />
+                  </mat-form-field>
+                  
+                  @if (!exp.get('currentlyWorking')?.value) {
+                    <mat-form-field appearance="outline" class="form-group col-6">
+                      <mat-label>End Date</mat-label>
+                      <input matInput formControlName="endDate" placeholder="YYYY-MM" />
+                    </mat-form-field>
+                  }
+                </div>
+
+                <!-- Nested Responsibilities FormArray -->
+                <div class="nested-array-section" formArrayName="responsibilities">
+                  <div class="nested-header">
+                    <h5>Responsibilities</h5>
+                    <button mat-stroked-button type="button" (click)="resumeService.addResponsibility(i)">
+                      <mat-icon>add</mat-icon> Add Responsibility
+                    </button>
+                  </div>
+                  @for (resp of resumeService.getResponsibilities(i).controls; track resp; let rIndex = $index) {
+                    <div class="nested-item-row">
+                      <mat-form-field appearance="outline" class="w-full">
+                        <input matInput [formControlName]="rIndex" placeholder="Describe a responsibility or duty..." />
+                      </mat-form-field>
+                      <button mat-icon-button color="warn" type="button" (click)="resumeService.removeResponsibility(i, rIndex)" [disabled]="resumeService.getResponsibilities(i).length <= 1">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  }
+                </div>
+
+                <!-- Nested Achievements FormArray -->
+                <div class="nested-array-section" formArrayName="achievements">
+                  <div class="nested-header">
+                    <h5>Achievements</h5>
+                    <div class="nested-action-group">
+                      <button mat-stroked-button type="button" class="ai-btn-mat" (click)="improveBullets(i)">
+                        <mat-icon>auto_awesome</mat-icon> Improve Bullets (AI)
+                      </button>
+                      <button mat-stroked-button type="button" (click)="resumeService.addExpAchievement(i)">
+                        <mat-icon>add</mat-icon> Add Achievement
+                      </button>
+                    </div>
+                  </div>
+                  @for (ach of resumeService.getExpAchievements(i).controls; track ach; let aIndex = $index) {
+                    <div class="nested-item-row">
+                      <mat-form-field appearance="outline" class="w-full">
+                        <input matInput [formControlName]="aIndex" placeholder="Describe a metric-driven achievement..." />
+                      </mat-form-field>
+                      <button mat-icon-button color="warn" type="button" (click)="resumeService.removeExpAchievement(i, aIndex)" [disabled]="resumeService.getExpAchievements(i).length <= 1">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+            <button mat-stroked-button class="w-full mt-2" type="button" (click)="resumeService.addExperience()">
+              <mat-icon>add</mat-icon> Add Work Experience
+            </button>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Section: Projects -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>5. Personal Projects</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="section-content-inner" formArrayName="projects">
+            @for (proj of resumeService.projects.controls; track proj; let i = $index) {
+              <div class="array-item-card" [formGroupName]="i">
+                <div class="card-header">
+                  <h4>Project #{{ i + 1 }}</h4>
+                  <button mat-stroked-button color="warn" type="button" (click)="resumeService.removeProject(i)">
+                    <mat-icon>delete</mat-icon> Remove
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Title *</mat-label>
+                    <input matInput formControlName="title" placeholder="e.g. E-Commerce Portal" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Technology Stack</mat-label>
+                    <input matInput formControlName="technologyStack" placeholder="e.g. Angular, NestJS, Postgres" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-12">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description" placeholder="Brief project overview..." rows="2"></textarea>
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>GitHub URL</mat-label>
+                    <input matInput formControlName="gitHubUrl" placeholder="e.g. github.com/username/project" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Live Demo URL</mat-label>
+                    <input matInput formControlName="liveUrl" placeholder="e.g. project.dev" />
+                  </mat-form-field>
+                </div>
+
+                <!-- Nested Highlights -->
+                <div class="nested-array-section" formArrayName="highlights">
+                  <div class="nested-header">
+                    <h5>Key Highlights</h5>
+                    <button mat-stroked-button type="button" (click)="resumeService.addHighlight(i)">
+                      <mat-icon>add</mat-icon> Add Highlight
+                    </button>
+                  </div>
+                  @for (hl of resumeService.getHighlights(i).controls; track hl; let hIndex = $index) {
+                    <div class="nested-item-row">
+                      <mat-form-field appearance="outline" class="w-full">
+                        <input matInput [formControlName]="hIndex" placeholder="Describe key engineering achievements..." />
+                      </mat-form-field>
+                      <button mat-icon-button color="warn" type="button" (click)="resumeService.removeHighlight(i, hIndex)" [disabled]="resumeService.getHighlights(i).length <= 1">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+            <button mat-stroked-button class="w-full mt-2" type="button" (click)="resumeService.addProject()">
+              <mat-icon>add</mat-icon> Add Project
+            </button>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Section: Education -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>6. Education</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="section-content-inner" formArrayName="education">
+            @for (edu of resumeService.education.controls; track edu; let i = $index) {
+              <div class="array-item-card" [formGroupName]="i">
+                <div class="card-header">
+                  <h4>Education #{{ i + 1 }}</h4>
+                  <button mat-stroked-button color="warn" type="button" (click)="resumeService.removeEducation(i)">
+                    <mat-icon>delete</mat-icon> Remove
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Degree/Certificate *</mat-label>
+                    <input matInput formControlName="degree" placeholder="e.g. BS in Computer Science" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Institution *</mat-label>
+                    <input matInput formControlName="institution" placeholder="e.g. State University" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>University (if different)</mat-label>
+                    <input matInput formControlName="university" placeholder="e.g. State University System" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>GPA / Grade</mat-label>
+                    <input matInput formControlName="cgpa" placeholder="e.g. 3.8/4.0 or 85%" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput formControlName="startDate" placeholder="YYYY-MM" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>End Date (or Expected)</mat-label>
+                    <input matInput formControlName="endDate" placeholder="YYYY-MM" />
+                  </mat-form-field>
+                </div>
+              </div>
+            }
+            <button mat-stroked-button class="w-full mt-2" type="button" (click)="resumeService.addEducation()">
+              <mat-icon>add</mat-icon> Add Education
+            </button>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Section: Certifications -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>7. Certifications</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="section-content-inner" formArrayName="certifications">
+            @for (cert of resumeService.certifications.controls; track cert; let i = $index) {
+              <div class="array-item-card" [formGroupName]="i">
+                <div class="card-header">
+                  <h4>Certification #{{ i + 1 }}</h4>
+                  <button mat-stroked-button color="warn" type="button" (click)="resumeService.removeCertification(i)">
+                    <mat-icon>delete</mat-icon> Remove
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Certification Name *</mat-label>
+                    <input matInput formControlName="name" placeholder="e.g. AWS Cloud Practitioner" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Issuer *</mat-label>
+                    <input matInput formControlName="issuer" placeholder="e.g. Amazon Web Services" />
+                  </mat-form-field>
+                  
+                  <mat-form-field appearance="outline" class="form-group col-6">
+                    <mat-label>Date Obtained</mat-label>
+                    <input matInput formControlName="date" placeholder="YYYY-MM" />
+                  </mat-form-field>
+                </div>
+              </div>
+            }
+            <button mat-stroked-button class="w-full mt-2" type="button" (click)="resumeService.addCertification()">
+              <mat-icon>add</mat-icon> Add Certification
+            </button>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Section: Other Details -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>8. Achievements & Languages</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="section-content-inner">
+            <div class="form-grid">
+              <mat-form-field appearance="outline" class="form-group col-12">
+                <mat-label>Achievements</mat-label>
+                <input matInput formControlName="achievements" placeholder="Winner of Hackathon, etc. (comma-separated)" />
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="form-group col-12">
+                <mat-label>Languages</mat-label>
+                <input matInput formControlName="languages" placeholder="English (Fluent), Spanish (Conversational), etc. (comma-separated)" />
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </div>
+
+  <!-- Right Side: Preview Pane with Tabs -->
+  <div class="preview-pane">
+    <div class="preview-toolbar">
+      <div class="tab-selector">
+        <button mat-stroked-button 
+          [class.active-tab]="activePreviewTab() === 'resume'" 
+          (click)="setPreviewTab('resume')">
+          <mat-icon>description</mat-icon> Resume Layout
+        </button>
+        <button mat-stroked-button 
+          [class.active-tab]="activePreviewTab() === 'roadmap'" 
+          (click)="setPreviewTab('roadmap')">
+          <mat-icon>map</mat-icon> Learning Roadmap
+        </button>
+        <button mat-stroked-button 
+          [class.active-tab]="activePreviewTab() === 'match'" 
+          (click)="setPreviewTab('match')">
+          <mat-icon>compare_arrows</mat-icon> Job Match
+        </button>
+        <button mat-stroked-button 
+          [class.active-tab]="activePreviewTab() === 'ats'" 
+          (click)="setPreviewTab('ats')">
+          <mat-icon>analytics</mat-icon> ATS Audit
+        </button>
+      </div>
+      <div class="toolbar-actions">
+        @if (activePreviewTab() === 'resume') {
+          <button mat-stroked-button onclick="window.print()">
+            <mat-icon>print</mat-icon> Print
+          </button>
+        }
+        @if (activePreviewTab() === 'roadmap' && roadmapData()) {
+          <button mat-stroked-button (click)="exportRoadmapPdf()">
+            <mat-icon>picture_as_pdf</mat-icon> Download Roadmap PDF
+          </button>
+          <button mat-stroked-button color="warn" (click)="clearRoadmap()">
+            <mat-icon>clear</mat-icon> Clear
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Resume Preview Tab -->
+    @if (activePreviewTab() === 'resume') {
+    <div class="a4-document-container">
+      <div class="a4-sheet">
+        <!-- Preview Content -->
+        @let data = resumeData();
+        
+        <header class="resume-preview-header">
+          <h1 class="resume-name">{{ data.personalInfo.fullName || 'YOUR NAME' }}</h1>
+          @if (data.personalInfo.currentRole) {
+            <div class="resume-title">{{ data.personalInfo.currentRole }}</div>
+          }
+          
+          <div class="resume-contact-links">
+            @if (data.personalInfo.email) {
+              <span>{{ data.personalInfo.email }}</span>
+            }
+            @if (data.personalInfo.phone) {
+              <span>{{ data.personalInfo.phone }}</span>
+            }
+            @if (data.personalInfo.location) {
+              <span>{{ data.personalInfo.location }}</span>
+            }
+            @if (data.personalInfo.linkedIn) {
+              <span>{{ data.personalInfo.linkedIn }}</span>
+            }
+            @if (data.personalInfo.gitHub) {
+              <span>{{ data.personalInfo.gitHub }}</span>
+            }
+            @if (data.personalInfo.portfolio) {
+              <span>{{ data.personalInfo.portfolio }}</span>
+            }
+          </div>
+        </header>
+
+        @if (data.professionalSummary) {
+          <section class="preview-section">
+            <h4 class="preview-section-title">Professional Summary</h4>
+            <p class="preview-summary-text">{{ data.professionalSummary }}</p>
+          </section>
+        }
+
+        <!-- Preview Skills Grid -->
+        @if (data.skills.programmingLanguages.length > 0 || data.skills.frameworks.length > 0 || data.skills.databases.length > 0 || data.skills.cloud.length > 0 || data.skills.devOps.length > 0 || data.skills.tools.length > 0 || data.skills.softSkills.length > 0) {
+          <section class="preview-section">
+            <h4 class="preview-section-title">Technical Skills</h4>
+            <div class="preview-skills-grid">
+              @if (data.skills.programmingLanguages.length > 0) {
+                <div class="preview-skills-row">
+                  <span class="skill-cat">Languages:</span>
+                  <span class="skill-vals">{{ data.skills.programmingLanguages.join(', ') }}</span>
+                </div>
+              }
+              @if (data.skills.frameworks.length > 0) {
+                <div class="preview-skills-row">
+                  <span class="skill-cat">Frameworks:</span>
+                  <span class="skill-vals">{{ data.skills.frameworks.join(', ') }}</span>
+                </div>
+              }
+              @if (data.skills.databases.length > 0) {
+                <div class="preview-skills-row">
+                  <span class="skill-cat">Databases:</span>
+                  <span class="skill-vals">{{ data.skills.databases.join(', ') }}</span>
+                </div>
+              }
+              @if (data.skills.cloud.length > 0) {
+                <div class="preview-skills-row">
+                  <span class="skill-cat">Cloud Services:</span>
+                  <span class="skill-vals">{{ data.skills.cloud.join(', ') }}</span>
+                </div>
+              }
+              @if (data.skills.devOps.length > 0) {
+                <div class="preview-skills-row">
+                  <span class="skill-cat">DevOps:</span>
+                  <span class="skill-vals">{{ data.skills.devOps.join(', ') }}</span>
+                </div>
+              }
+              @if (data.skills.tools.length > 0) {
+                <div class="preview-skills-row">
+                  <span class="skill-cat">Tools & Platforms:</span>
+                  <span class="skill-vals">{{ data.skills.tools.join(', ') }}</span>
+                </div>
+              }
+              @if (data.skills.softSkills.length > 0) {
+                <div class="preview-skills-row">
+                  <span class="skill-cat">Soft Skills:</span>
+                  <span class="skill-vals">{{ data.skills.softSkills.join(', ') }}</span>
+                </div>
+              }
+            </div>
+          </section>
+        }
+
+        <!-- Preview Work Experience -->
+        @if (data.experience.length > 0) {
+          <section class="preview-section">
+            <h4 class="preview-section-title">Work Experience</h4>
+            @for (exp of data.experience; track $index) {
+              @if (exp.company || exp.role) {
+                <div class="preview-experience-item">
+                  <div class="preview-item-header">
+                    <div>
+                      <strong class="item-primary">{{ exp.role || 'Role' }}</strong> at 
+                      <span class="item-secondary">{{ exp.company || 'Company' }}</span>
+                    </div>
+                    <div class="item-dates">
+                      {{ exp.startDate || 'Start Date' }} &mdash; 
+                      {{ exp.currentlyWorking ? 'Present' : (exp.endDate || 'End Date') }}
+                      @if (exp.location) {
+                        | {{ exp.location }}
+                      }
+                    </div>
+                  </div>
+                  
+                  @if (exp.responsibilities.length > 0) {
+                    <ul class="preview-bullet-list">
+                      @for (resp of exp.responsibilities; track $index) {
+                        @if (resp.trim().length > 0) {
+                          <li>{{ resp }}</li>
+                        }
+                      }
+                    </ul>
+                  }
+
+                  @if (exp.achievements.length > 0) {
+                    <div class="preview-achievements-label">Key Achievements:</div>
+                    <ul class="preview-bullet-list achievement-bullets">
+                      @for (ach of exp.achievements; track $index) {
+                        @if (ach.trim().length > 0) {
+                          <li>{{ ach }}</li>
+                        }
+                      }
+                    </ul>
+                  }
+                </div>
+              }
+            }
+          </section>
+        }
+
+        <!-- Preview Projects -->
+        @if (data.projects.length > 0) {
+          <section class="preview-section">
+            <h4 class="preview-section-title">Personal Projects</h4>
+            @for (proj of data.projects; track $index) {
+              @if (proj.title) {
+                <div class="preview-experience-item">
+                  <div class="preview-item-header">
+                    <div>
+                      <strong class="item-primary">{{ proj.title }}</strong>
+                      @if (proj.technologyStack) {
+                        <span class="item-tech-tag">({{ proj.technologyStack }})</span>
+                      }
+                    </div>
+                    <div class="item-dates">
+                      @if (proj.liveUrl) {
+                        <span class="preview-link">{{ proj.liveUrl }}</span>
+                      }
+                      @if (proj.gitHubUrl) {
+                        <span class="preview-link"> | {{ proj.gitHubUrl }}</span>
+                      }
+                    </div>
+                  </div>
+                  @if (proj.description) {
+                    <p class="project-desc-preview">{{ proj.description }}</p>
+                  }
+                  @if (proj.highlights.length > 0) {
+                    <ul class="preview-bullet-list">
+                      @for (hl of proj.highlights; track $index) {
+                        @if (hl.trim().length > 0) {
+                          <li>{{ hl }}</li>
+                        }
+                      }
+                    </ul>
+                  }
+                </div>
+              }
+            }
+          </section>
+        }
+
+        <!-- Preview Education -->
+        @if (data.education.length > 0) {
+          <section class="preview-section">
+            <h4 class="preview-section-title">Education</h4>
+            @for (edu of data.education; track $index) {
+              @if (edu.degree || edu.institution) {
+                <div class="preview-experience-item">
+                  <div class="preview-item-header">
+                    <div>
+                      <strong class="item-primary">{{ edu.degree || 'Degree' }}</strong> &mdash; 
+                      <span class="item-secondary">{{ edu.institution }}</span>
+                      @if (edu.university && edu.university !== edu.institution) {
+                        <span class="item-sub-secondary"> ({{ edu.university }})</span>
+                      }
+                    </div>
+                    <div class="item-dates">
+                      {{ edu.startDate || 'Start Date' }} &mdash; {{ edu.endDate || 'End Date' }}
+                      @if (edu.cgpa) {
+                        | Grade: {{ edu.cgpa }}
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          </section>
+        }
+
+        <!-- Preview Certifications -->
+        @if (data.certifications.length > 0) {
+          <section class="preview-section">
+            <h4 class="preview-section-title">Certifications</h4>
+            <div class="cert-preview-grid">
+              @for (cert of data.certifications; track $index) {
+                @if (cert.name || cert.issuer) {
+                  <div class="cert-item">
+                    <strong>{{ cert.name }}</strong> &ndash; <span>{{ cert.issuer }}</span>
+                    @if (cert.date) {
+                      <span class="cert-date">({{ cert.date }})</span>
+                    }
+                  </div>
+                }
+              }
+            </div>
+          </section>
+        }
+
+        <!-- Achievements & Languages Double Column -->
+        @if (data.achievements.length > 0 || data.languages.length > 0) {
+          <div class="double-column-preview">
+            @if (data.achievements.length > 0) {
+              <div class="preview-column">
+                <h4 class="preview-section-title">Key Achievements</h4>
+                <ul class="preview-bullet-list">
+                  @for (ach of data.achievements; track $index) {
+                    <li>{{ ach }}</li>
+                  }
+                </ul>
+              </div>
+            }
+            @if (data.languages.length > 0) {
+              <div class="preview-column">
+                <h4 class="preview-section-title">Languages</h4>
+                <ul class="preview-bullet-list">
+                  @for (lang of data.languages; track $index) {
+                    <li>{{ lang }}</li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Roadmap Preview Tab -->
+    @if (activePreviewTab() === 'roadmap') {
+      @if (!roadmapData()) {
+        <!-- Empty State: AI Roadmap Inputs -->
+        <div class="roadmap-empty-state">
+          <mat-icon class="empty-icon">auto_awesome</mat-icon>
+          <h3>Generate an AI Learning Roadmap</h3>
+          <p>Enter your target role and optionally paste a job description. The AI will analyze your resume and craft a personalized learning pathway to close the skill gap.</p>
+
+          <div class="roadmap-inputs">
+            <mat-form-field appearance="outline" class="roadmap-input-full">
+              <mat-label>Target Career Role *</mat-label>
+              <input matInput 
+                placeholder="e.g. Senior DevOps Engineer" 
+                [value]="roadmapTargetRole()"
+                (input)="roadmapTargetRole.set($any($event.target).value)" />
+              <mat-hint>Required — the role you want to grow into</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="roadmap-input-full">
+              <mat-label>Target Job Description (Optional)</mat-label>
+              <textarea matInput
+                rows="5"
+                placeholder="Paste the job description here for a tailored, gap-bridging roadmap..."
+                [value]="roadmapJDText()"
+                (input)="roadmapJDText.set($any($event.target).value)"></textarea>
+              <mat-hint>Leave blank for a general industry-standard roadmap</mat-hint>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" class="roadmap-generate-btn" (click)="generateRoadmap()">
+              <mat-icon>auto_awesome</mat-icon> Generate AI Roadmap
+            </button>
+          </div>
+        </div>
+      } @else {
+        <!-- Generated Roadmap View -->
+        @let roadmap = roadmapData()!;
+        <div class="roadmap-preview-container">
+          <div class="roadmap-header">
+            <h2>{{ roadmap.targetRole }}</h2>
+            <p class="roadmap-description">{{ roadmap.description }}</p>
+          </div>
+
+          <div class="roadmap-timeline">
+            @for (step of roadmap.steps; track $index) {
+              <div class="roadmap-step-card">
+                <div class="step-number">{{ $index + 1 }}</div>
+                <div class="step-content">
+                  <div class="step-header">
+                    <h4>{{ step.stepTitle }}</h4>
+                    <span class="duration-tag">
+                      <mat-icon>schedule</mat-icon> {{ step.durationEstimate }}
+                    </span>
+                  </div>
+                  <p class="step-description">{{ step.description }}</p>
+                  @if (step.resources.length > 0) {
+                    <div class="step-resources">
+                      <h5>Recommended Resources</h5>
+                      <ul>
+                        @for (res of step.resources; track $index) {
+                          <li>{{ res }}</li>
+                        }
+                      </ul>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+
+    <!-- Job Match Tab -->
+    @if (activePreviewTab() === 'match') {
+      <div class="match-tab-container">
+        <div class="match-header">
+          <h2>Job Description Matching</h2>
+          <p>Paste the job description of your target role to evaluate keyword density and alignment.</p>
+        </div>
+
+        <div class="match-input-card">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Target Job Description</mat-label>
+            <textarea matInput 
+              rows="8" 
+              placeholder="Paste the full job description here..."
+              [value]="matchJDText()"
+              (input)="updateJDText($any($event.target).value)"></textarea>
+          </mat-form-field>
+          <button mat-flat-button color="primary" class="match-btn" (click)="triggerJobMatch()">
+            <mat-icon>compare_arrows</mat-icon> Analyze Compatibility
+          </button>
+        </div>
+
+        @if (jobMatchData(); as match) {
+          <div class="match-results">
+            <div class="score-card">
+              <div class="score-ring" [style.--score]="match.matchScore" [class.high-score]="match.matchScore >= 80" [class.mid-score]="match.matchScore >= 50 && match.matchScore < 80" [class.low-score]="match.matchScore < 50">
+                <span class="score-value">{{ match.matchScore }}%</span>
+                <span class="score-label">Match Score</span>
+              </div>
+              <div class="score-desc">
+                @if (match.matchScore >= 80) {
+                  <h4>Excellent Fit!</h4>
+                  <p>Your resume matches the target job description very well. Optimize suggestions for maximum impact.</p>
+                } @else if (match.matchScore >= 50) {
+                  <h4>Moderate Alignment</h4>
+                  <p>Your profile aligns partially. Add missing skills and address recommendations below to increase your score.</p>
+                } @else {
+                  <h4>Low Alignment</h4>
+                  <p>Significant gaps detected. Carefully integrate keywords and accomplishments matching the JD.</p>
+                }
+              </div>
+            </div>
+
+            @if (match.missingSkills.length > 0) {
+              <div class="skills-gap-section">
+                <h4>Missing Skills / Key Terms</h4>
+                <div class="badges-list">
+                  @for (skill of match.missingSkills; track skill) {
+                    <span class="skill-badge-missing">{{ skill }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (match.suggestions.length > 0) {
+              <div class="suggestions-section">
+                <h4>Tailored Recommendations</h4>
+                <ul class="suggestions-list">
+                  @for (sug of match.suggestions; track sug) {
+                    <li>
+                      <mat-icon>lightbulb</mat-icon>
+                      <span>{{ sug }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- ATS Audit Tab -->
+    @if (activePreviewTab() === 'ats') {
+      <div class="ats-tab-container">
+        <div class="ats-header">
+          <h2>ATS Compatibility Audit</h2>
+          <p>Scan your resume for Applicant Tracking System (ATS) parsers, keyword density, and formatting compliance.</p>
+          @if (!atsReviewData()) {
+            <button mat-flat-button color="primary" class="audit-btn" (click)="triggerAtsAudit()">
+              <mat-icon>analytics</mat-icon> Run ATS Scan
+            </button>
+          }
+        </div>
+
+        @if (atsReviewData(); as audit) {
+          <div class="ats-results">
+            <div class="audit-toolbar-row">
+              <button mat-stroked-button (click)="triggerAtsAudit()">
+                <mat-icon>refresh</mat-icon> Re-run Scan
+              </button>
+            </div>
+
+            <div class="score-card">
+              <div class="score-ring" [style.--score]="audit.atsScore" [class.high-score]="audit.atsScore >= 80" [class.mid-score]="audit.atsScore >= 50 && audit.atsScore < 80" [class.low-score]="audit.atsScore < 50">
+                <span class="score-value">{{ audit.atsScore }}%</span>
+                <span class="score-label">ATS Score</span>
+              </div>
+              <div class="score-desc">
+                @if (audit.atsScore >= 80) {
+                  <h4>ATS Ready</h4>
+                  <p>Your resume structure, formatting, and keyword layouts are highly compatible with automated parsers.</p>
+                } @else if (audit.atsScore >= 50) {
+                  <h4>Action Required</h4>
+                  <p>Average compatibility. Resolve the formatting details and keywords highlighted below to prevent parsing issues.</p>
+                } @else {
+                  <h4>Critical Gaps</h4>
+                  <p>Your resume risks being parsed incorrectly or rejected due to low keyword matches. Fix issues immediately.</p>
+                }
+              </div>
+            </div>
+
+            <div class="grid-sections">
+              <div class="audit-card">
+                <h4><mat-icon color="warn">warning</mat-icon> Formatting & Layout Critique</h4>
+                @if (audit.formattingIssues.length === 0) {
+                  <p class="clean-msg"><mat-icon>check_circle</mat-icon> No formatting issues detected.</p>
+                } @else {
+                  <ul class="audit-list">
+                    @for (issue of audit.formattingIssues; track issue) {
+                      <li>{{ issue }}</li>
+                    }
+                  </ul>
+                }
+              </div>
+
+              <div class="audit-card">
+                <h4><mat-icon color="primary">auto_awesome</mat-icon> Improvement Actions</h4>
+                <ul class="audit-list check-list">
+                  @for (sug of audit.improvementSuggestions; track sug) {
+                    <li><mat-icon>check_box_outline_blank</mat-icon> {{ sug }}</li>
+                  }
+                </ul>
+              </div>
+            </div>
+
+            <div class="keywords-analysis-card">
+              <h4>Keyword & Term Audit</h4>
+              <div class="keywords-grid">
+                <div class="kw-group">
+                  <h5>Keyword Matches (Found)</h5>
+                  @if (audit.keywordMatches.length === 0) {
+                    <p class="no-tags">No strong keywords recognized yet.</p>
+                  } @else {
+                    <div class="badges-list">
+                      @for (kw of audit.keywordMatches; track kw) {
+                        <span class="skill-badge-found">{{ kw }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+                
+                <div class="kw-group">
+                  <h5>Recommended Additions (Missing)</h5>
+                  @if (audit.missingKeywords.length === 0) {
+                    <p class="no-tags">No missing critical keywords identified.</p>
+                  } @else {
+                    <div class="badges-list">
+                      @for (kw of audit.missingKeywords; track kw) {
+                        <span class="skill-badge-missing">{{ kw }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Toast Notice -->
+  @if (showAiNotice()) {
+    <div class="ai-toast-notice">
+      <div class="toast-content">
+        <span class="toast-icon">
+          <mat-icon>auto_awesome</mat-icon>
+        </span>
+        <div class="toast-text">
+          <h5>{{ aiNoticeTitle() }}</h5>
+          <p>{{ aiNoticeMessage() }}</p>
+        </div>
+      </div>
+      <button class="toast-close" (click)="closeNotice()">×</button>
+    </div>
+  }
+
+  <!-- Material Loading Spinner Overlay -->
+  @if (resumeService.isLoading()) {
+    <div class="loading-overlay">
+      <div class="loading-container">
+        <mat-spinner diameter="60" color="primary"></mat-spinner>
+        <span class="loading-text">{{ resumeService.loadingMessage() }}</span>
+      </div>
+    </div>
+  }
+</div>

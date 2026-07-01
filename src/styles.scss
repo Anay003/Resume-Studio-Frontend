@@ -1,1 +1,575 @@
-/* You can add global styles to this file, and also import other style files */
+
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+/* AI Resume Studio - Global Styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  
+  --neutral-50: #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1e293b;
+  --neutral-900: #0f172a;
+
+  --success-color: #10b981;
+  --error-color: #ef4444;
+
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--neutral-50);
+  color: var(--neutral-800);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--neutral-900);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  
+  &:hover {
+    color: var(--primary-hover);
+  }
+}
+
+/* Forms */
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--neutral-700);
+  margin-bottom: 0.375rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--neutral-900);
+  background-color: #fff;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--border-radius-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+
+  &:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+
+  &::placeholder {
+    color: var(--neutral-400);
+  }
+
+  &:disabled {
+    background-color: var(--neutral-100);
+    color: var(--neutral-500);
+    cursor: not-allowed;
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Checkbox and Radio styling */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.875rem;
+  color: var(--neutral-700);
+
+  input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+  }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  white-space: nowrap;
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+  }
+
+  &:disabled {
+    background-color: var(--neutral-300);
+    color: var(--neutral-500);
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  background-color: #fff;
+  border-color: var(--neutral-300);
+  color: var(--neutral-700);
+
+  &:hover:not(:disabled) {
+    background-color: var(--neutral-50);
+    border-color: var(--neutral-400);
+    color: var(--neutral-900);
+  }
+
+  &:disabled {
+    background-color: var(--neutral-50);
+    border-color: var(--neutral-200);
+    color: var(--neutral-400);
+    cursor: not-allowed;
+  }
+}
+
+.btn-danger {
+  background-color: #fff;
+  border-color: var(--error-color);
+  color: var(--error-color);
+
+  &:hover:not(:disabled) {
+    background-color: #fef2f2;
+  }
+
+  &:disabled {
+    background-color: var(--neutral-50);
+    border-color: var(--neutral-200);
+    color: var(--neutral-400);
+    cursor: not-allowed;
+  }
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: var(--border-radius-sm);
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: var(--neutral-100);
+  color: var(--neutral-600);
+}
+
+.badge-coming-soon {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-4 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.w-full { width: 100%; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ---------------------------------------------------- */
+/* Resume Preview (Shared Global & Print Layout styles)  */
+/* ---------------------------------------------------- */
+
+// Simulation of A4 sheet (shared between browser preview container and print engine)
+.a4-sheet {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  background-color: #fff;
+  border: 1px solid var(--neutral-200);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  overflow: hidden;
+  
+  // Resume specific typography rules
+  color: #333333;
+  font-size: 10.5pt;
+  line-height: 1.4;
+  font-family: 'Times New Roman', Times, serif; // Classical resume font style
+}
+
+// Resume Preview Elements
+.resume-preview-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  
+  .resume-name {
+    font-size: 24pt;
+    font-weight: 700;
+    color: #111111;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.25rem;
+    font-family: var(--font-family);
+  }
+  
+  .resume-title {
+    font-size: 12pt;
+    font-weight: 500;
+    color: #555555;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-family);
+  }
+  
+  .resume-contact-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 9pt;
+    color: #555555;
+    font-family: var(--font-family);
+  }
+}
+
+.preview-section {
+  margin-bottom: 1.5rem;
+}
+
+.preview-section-title {
+  font-size: 11pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #111111;
+  border-bottom: 1px solid #222222;
+  padding-bottom: 0.125rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.05em;
+  font-family: var(--font-family);
+}
+
+.preview-summary-text {
+  text-align: justify;
+  margin-bottom: 0;
+}
+
+.preview-skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.preview-skills-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  font-size: 9.5pt;
+  
+  .skill-cat {
+    font-weight: 700;
+    color: #222222;
+    font-family: var(--font-family);
+  }
+}
+
+.preview-experience-item {
+  margin-bottom: 1rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.preview-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 10pt;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-family);
+  
+  .item-primary {
+    font-weight: 700;
+    color: #111111;
+  }
+  
+  .item-secondary {
+    font-weight: 600;
+    color: #333333;
+  }
+
+  .item-tech-tag {
+    font-weight: 400;
+    color: #666;
+    font-size: 9pt;
+    margin-left: 0.25rem;
+  }
+  
+  .item-dates {
+    font-size: 9pt;
+    color: #555555;
+    font-style: italic;
+  }
+}
+
+.project-desc-preview {
+  font-size: 9.5pt;
+  margin-bottom: 0.25rem;
+  font-style: italic;
+}
+
+.preview-bullet-list {
+  padding-left: 1.25rem;
+  margin-bottom: 0.25rem;
+  list-style-type: square;
+  
+  li {
+    margin-bottom: 0.125rem;
+    font-size: 9.5pt;
+    text-align: justify;
+  }
+}
+
+.preview-achievements-label {
+  font-size: 9pt;
+  font-weight: 700;
+  color: #444444;
+  margin-top: 0.375rem;
+  margin-bottom: 0.125rem;
+  font-family: var(--font-family);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.cert-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.375rem;
+  font-size: 9.5pt;
+  
+  .cert-date {
+    color: #666666;
+    margin-left: 0.25rem;
+    font-style: italic;
+  }
+}
+
+.double-column-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  
+  .preview-column {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ---------------------------------------------------- */
+/* Print overrides (Apply globally to document print)    */
+/* ---------------------------------------------------- */
+@media print {
+  // Hide UI layouts
+  .main-header,
+  .main-footer,
+  .pane-header,
+  .ai-helpers-bar,
+  .editor-pane,
+  .preview-toolbar,
+  .ai-toast-notice {
+    display: none !important;
+  }
+  
+  .workspace-container,
+  .app-container,
+  .app-main {
+    height: auto !important;
+    display: block !important;
+    background: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  .preview-pane {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+  
+  .a4-document-container {
+    max-width: none !important;
+    display: block !important;
+  }
+  
+  .a4-sheet {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Material Loading Overlay styles */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  transition: opacity 0.3s ease;
+
+  .loading-container {
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    border-radius: 16px;
+    padding: 36px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 90%;
+    text-align: center;
+    
+    .loading-text {
+      color: #f8fafc;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+  }
+}
